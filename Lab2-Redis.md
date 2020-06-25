@@ -139,9 +139,16 @@ java -jar target/mybatis-spring-boot-jpetstore-2.0.0-SNAPSHOT.jar
 
 14. Cloud 9 Terminal은 여러개의 Tab을 띄울 수 있습니다. Terminal을 새롭게 추가한 다음, 다음과 같은 명령어를 이용하여, Redis에 접속합니다. 이후 KEYS * 명령어를 이용하여 Session 정보가 들어가 있는 것을 확인합니다. 
 
+![image](https://user-images.githubusercontent.com/9047122/85806760-f6ab1b00-b78a-11ea-95c2-61c48f19c245.png)
+
+신규 창이므로 REDIS_ENDPOINT와 값은 환경변수 값은 현재 터미널에서는 찾을 수가 없습니다. 해당 값을 추가합니다. 
+
 ```
 REDIS_ENDPOINT=`aws elasticache describe-cache-clusters --cache-cluster-id redis-session-manager-cluster --show-cache-node-info | jq ' .CacheClusters[0].CacheNodes[0].Endpoint.Address' | sed '1,$s/"//g'`
+```
 
+Redis Client를 이용하여 접속해 보시기 바랍니다. 
+```
 $ rdcli -h ${REDIS_ENDPOINT}
 redis-session-manager-cluster.xxxxx.0001.apn2.cache.amazonaws.com:6379> KEYS *
 redis-session-manager-cluster.xxxxx.0001.apn2.cache.amazonaws.com:6379> KEYS *
