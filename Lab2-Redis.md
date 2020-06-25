@@ -75,9 +75,11 @@ aws ec2 authorize-security-group-ingress \
 
 ![image](https://user-images.githubusercontent.com/9047122/85366344-20352e00-b562-11ea-834a-1e73ebbe5230.png)
 
-6. Redis Cluster 정보를 추가합니다. 
+6. Redis Cluster 정보를 추가합니다. ElastiCache가 생성하는 도중에는 Endpoint 정보를 제공하지 않습니다. 따라서 Wait명령어를 이용하여 가용상태까지 대기하다가, 정상적으로 구성되면, 해당 Endpoint값을 Spring의 properties파일에 추가하도록 합니다. 
 
 ```
+aws elasticache wait cache-cluster-available --cache-cluster-id redis-session-manager-cluster
+
 REDIS_ENDPOINT=`aws elasticache describe-cache-clusters --cache-cluster-id redis-session-manager-cluster --show-cache-node-info | jq ' .CacheClusters[0].CacheNodes[0].Endpoint.Address' | sed '1,$s/"//g'`
 
 echo "spring.redis.host=${REDIS_ENDPOINT}" >> src/main/resources/application.properties
