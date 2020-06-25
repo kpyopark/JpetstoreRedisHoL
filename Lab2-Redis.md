@@ -137,9 +137,11 @@ java -jar target/mybatis-spring-boot-jpetstore-2.0.0-SNAPSHOT.jar
 
 13. 로그인을 수행합니다. 
 
-14. Cloud 9 Terminal 에서 다음과 같은 명령어를 이용하여, Redis에 접속합니다. 이후 KEYS * 명령어를 이용하여 Session 정보가 들어가 있는 것을 확인합니다. 
+14. Cloud 9 Terminal은 여러개의 Tab을 띄울 수 있습니다. Terminal을 새롭게 추가한 다음, 다음과 같은 명령어를 이용하여, Redis에 접속합니다. 이후 KEYS * 명령어를 이용하여 Session 정보가 들어가 있는 것을 확인합니다. 
 
 ```
+REDIS_ENDPOINT=`aws elasticache describe-cache-clusters --cache-cluster-id redis-session-manager-cluster --show-cache-node-info | jq ' .CacheClusters[0].CacheNodes[0].Endpoint.Address' | sed '1,$s/"//g'`
+
 $ rdcli -h ${REDIS_ENDPOINT}
 redis-session-manager-cluster.xxxxx.0001.apn2.cache.amazonaws.com:6379> KEYS *
 redis-session-manager-cluster.xxxxx.0001.apn2.cache.amazonaws.com:6379> KEYS *
