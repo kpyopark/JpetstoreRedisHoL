@@ -100,4 +100,4 @@ java -jar target/mybatis-spring-boot-jpetstore-2.0.0-SNAPSHOT.jar
 ![image](https://user-images.githubusercontent.com/9047122/85339790-d1ff3b00-b51f-11ea-9161-28a49d5a6d4b.png)
 
 
-다음 장으로 이동하시기 바랍니다. [Lab1-EB](Lab1-EB.md)
+다음 장으로 이동하시기 바랍니다. [Lab2-Redis](Lab2-Redis.md)
