@@ -8,7 +8,7 @@
 
 0. 현재 기동되어 있는 Jpetstore Application이 있다면, ctrl+c 로 중지시킵니다. 앞으로 진행되는 내용은 원래 있던 terminal에서 수행해야 합니다. (환경 변수)
 
-1. RDS Aurora MySQL 에서 사용할 user / password 에서 사용할 정보를 Cloud 9 에 아래와 같이 저장합니다. !!! 주의 - <what as you want> 부분을 반드시 수정하십시요.
+1. RDS Aurora MySQL 에서 사용할 user / password 에서 사용할 정보를 Cloud 9 에 아래와 같이 저장합니다. !!! 주의 - <what as you want> 부분을 반드시 수정하십시요. password의 경우 8글자 이상이어야 합니다.
 
 ```
 DB_USER=<what as you want>
@@ -23,10 +23,11 @@ DB_PASS=<what as you want>
 C9_SG=`aws ec2 describe-instances | jq ' .Reservations[0].Instances[0].SecurityGroups[0].GroupId ' | sed '1,$s/"//g'`
 DEFAULT_VPC=`aws ec2 describe-vpcs | jq ' .Vpcs[] | select(.IsDefault == true) | .VpcId' | sed '1,$s/"//g'`
 DEFAULT_VPC_CIDR=`aws ec2 describe-vpcs | jq ' .Vpcs[] | select(.IsDefault == true) | .CidrBlock' | sed '1,$s/"//g'`
+DEFAULT_VPC=`aws ec2 describe-vpcs | jq ' .Vpcs[] | select(.IsDefault == true) | .VpcId' | sed '1,$s/"//g'`
 DB_PORT=3306
 DB_ENGINE=aurora-mysql
-SUBNETS=`aws ec2 describe-subnets --filters Name=vpc-id,Values=${DEFAULT_VPC} | jq ' .Subnets[0:3] | .[].SubnetId' | sed '1,$s/"//g' | xargs`
-SUBNET_AZ=`aws ec2 describe-subnets --filters Name=vpc-id,Values=${DEFAULT_VPC} | jq ' .Subnets[0:3] | .[].AvailabilityZone' | sed '1,$s/"//g' | xargs`
+SUBNET_AZ=`aws ec2 describe-subnets --filters Name=vpc-id,Values=${DEFAULT_VPC} | jq ' .Subnets[] | .AvailabilityZone' | sed '1,$s/"//g' | xargs`
+SUBNETS=`aws ec2 describe-subnets --filters Name=vpc-id,Values=${DEFAULT_VPC} | jq ' .Subnets[] | .SubnetId' | sed '1,$s/"//g' | xargs`
 
 aws ec2 authorize-security-group-ingress \
 --group-id ${C9_SG} \
