@@ -113,7 +113,16 @@ java -jar target/mybatis-spring-boot-jpetstore-2.0.0-SNAPSHOT.jar
 7. 이제는 정상적으로 MySQL 데이터가 들어가 있는지 볼 차례입니다. 아래 명령어를 이용하여 MySQL 서버에 접근합니다. 
 
 ```
-$ mysql -h ${DB_ENDPOINT} -u ${DB_USER}
+DB_ENDPOINT=`aws rds describe-db-clusters | jq ' .DBClusters[] | select(.DBClusterIdentifier == "jpetstoredb").Endpoint' | sed '1,$s/"//g'`
+cd ~/environment/mybatis-spring-boot-jpetstore
+
+```
+만약 DB_USER 가 환경 변수에서 사라졌을 수 있기 때문에 다시 DB_USER를 입력하고, 이후 패스워드는 DB Password를 입력합니다. 
+
+```
+DB_USER=<앞서 지정한 DB User>
+
+$ mysql -h ${DB_ENDPOINT} -u ${DB_USER} -p
 password : 
 
 ```
@@ -121,8 +130,37 @@ password :
 8. 접속이 정상적으로 되어 있다면, 사용자 테이블을 조회하여 신규 사용자가 등록되어 있는 지 확인해 봅니다. 
 
 ```sql
-select * from 
+mysql> use dev;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
 
+Database changed
+mysql> show tables;
++-----------------------+
+| Tables_in_dev         |
++-----------------------+
+| ACCOUNT               |
+| BANNERDATA            |
+..
+..
+
+| flyway_schema_history |
++-----------------------+
+14 rows in set (0.01 sec)
+
+mysql> select * from ACCOUNT;
++-------------+-------------------------+-----------+----------+--------+----------------------+---------------+-----------+-------+-------+-------------+--------------+
+| USERID      | EMAIL                   | FIRSTNAME | LASTNAME | STATUS | ADDR1                | ADDR2         | CITY      | STATE | ZIP   | COUNTRY     | PHONE        |
++-------------+-------------------------+-----------+----------+--------+----------------------+---------------+-----------+-------+-------+-------------+--------------+
+| ACID        | acid@yourdomain.com     | ABC       | XYX      | OK     | 901 San Antonio Road | MS UCUP02-206 | Palo Alto | CA    | 94303 | USA         | 555-555-5555 |
+| honggildong | toheavener01@gmail.com  | 1         | 1        | NULL   | 1                    | 1             | 1         | 1     | 07204 | South Korea | 01081667716  |
+| j2ee        | yourname@yourdomain.com | ABC       | XYX      | OK     | 901 San Antonio Road | MS UCUP02-206 | Palo Alto | CA    | 94303 | USA         | 555-555-5555 |
++-------------+-------------------------+-----------+----------+--------+----------------------+---------------+-----------+-------+-------+-------------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> exit
+Bye
+TeamRole:~/environment/mybatis-spring-boot-jpetstore (master) $ 
 ```
 
 9. 수고하셨습니다. 해당 기능을 통하여, Java application 과 Aurora MySQL 연결에 성공하셨습니다.
