@@ -26,8 +26,8 @@ DEFAULT_VPC_CIDR=`aws ec2 describe-vpcs | jq ' .Vpcs[] | select(.IsDefault == tr
 DEFAULT_VPC=`aws ec2 describe-vpcs | jq ' .Vpcs[] | select(.IsDefault == true) | .VpcId' | sed '1,$s/"//g'`
 DB_PORT=3306
 DB_ENGINE=aurora-mysql
-SUBNET_AZ=`aws ec2 describe-subnets --filters Name=vpc-id,Values=${DEFAULT_VPC} | jq ' .Subnets[] | .AvailabilityZone' | sed '1,$s/"//g' | xargs`
-SUBNETS=`aws ec2 describe-subnets --filters Name=vpc-id,Values=${DEFAULT_VPC} | jq ' .Subnets[] | .SubnetId' | sed '1,$s/"//g' | xargs`
+SUBNET_AZ=`aws ec2 describe-subnets --filters Name=vpc-id,Values=${DEFAULT_VPC} | jq ' .Subnets[0:3] | .[].AvailabilityZone' | sed '1,$s/"//g' | xargs`
+SUBNETS=`aws ec2 describe-subnets --filters Name=vpc-id,Values=${DEFAULT_VPC} | jq ' .Subnets[0:3] | .[].SubnetId' | sed '1,$s/"//g' | xargs`
 
 aws ec2 authorize-security-group-ingress \
 --group-id ${C9_SG} \
