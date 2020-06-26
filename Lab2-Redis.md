@@ -15,7 +15,7 @@ aws elasticache create-cache-subnet-group \
 --cache-subnet-group-description "Redis Test Cluster Subnets" \
 --subnet-ids ${SUBNETS}
 
-C9_SG=`aws ec2 describe-instances --instance-id | jq ' .Reservations[0].Instances[0].SecurityGroups[0].GroupId ' | sed '1,$s/"//g'`
+C9_SG=`aws ec2 describe-instances --instance-id | jq ' .Reservations[0].Instances[] | select( .VpcId == "'${DEFAULT_VPC}'").SecurityGroups[0].GroupId ' | sed '1,$s/"//g'`
 
 aws elasticache create-cache-cluster \
 --cache-cluster-id redis-session-manager-cluster \
