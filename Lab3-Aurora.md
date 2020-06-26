@@ -153,7 +153,7 @@ mysql> select * from ACCOUNT;
 | USERID      | EMAIL                   | FIRSTNAME | LASTNAME | STATUS | ADDR1                | ADDR2         | CITY      | STATE | ZIP   | COUNTRY     | PHONE        |
 +-------------+-------------------------+-----------+----------+--------+----------------------+---------------+-----------+-------+-------+-------------+--------------+
 | ACID        | acid@yourdomain.com     | ABC       | XYX      | OK     | 901 San Antonio Road | MS UCUP02-206 | Palo Alto | CA    | 94303 | USA         | 555-555-5555 |
-| honggildong | toheavener01@gmail.com  | 1         | 1        | NULL   | 1                    | 1             | 1         | 1     | 07204 | South Korea | 01081667716  |
+| honggildong | hongildong@gmail.com    | 1         | 1        | NULL   | 1                    | 1             | 1         | 1     | 07204 | South Korea | 01081667716  |
 | j2ee        | yourname@yourdomain.com | ABC       | XYX      | OK     | 901 San Antonio Road | MS UCUP02-206 | Palo Alto | CA    | 94303 | USA         | 555-555-5555 |
 +-------------+-------------------------+-----------+----------+--------+----------------------+---------------+-----------+-------+-------+-------------+--------------+
 3 rows in set (0.00 sec)
