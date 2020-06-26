@@ -82,7 +82,7 @@ aws elasticache wait cache-cluster-available --cache-cluster-id redis-session-ma
 
 REDIS_ENDPOINT=`aws elasticache describe-cache-clusters --cache-cluster-id redis-session-manager-cluster --show-cache-node-info | jq ' .CacheClusters[0].CacheNodes[0].Endpoint.Address' | sed '1,$s/"//g'`
 
-echo "spring.redis.host=${REDIS_ENDPOINT}" >> src/main/resources/application.properties
+echo "spring.redis.host=${REDIS_ENDPOINT}" >> ~/environment/mybatis-spring-boot-jpetstore/src/main/resources/application.properties
 
 ```
 
@@ -92,8 +92,10 @@ echo "spring.redis.host=${REDIS_ENDPOINT}" >> src/main/resources/application.pro
    이후, Redis Session이 생성되면 KEYS가 추가되는 것을 볼 수 있습니다. 
 
 ```
-$ npm install -g redis-cli
-$ rdcli -h ${REDIS_ENDPOINT}
+npm install -g redis-cli
+rdcli -h ${REDIS_ENDPOINT}
+
+# 출력 결과
 redis-session-manager-cluster.xxxxx.0001.apn2.cache.amazonaws.com:6379> KEYS *
 
 ```
